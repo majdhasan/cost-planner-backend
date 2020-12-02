@@ -12,6 +12,7 @@ expenseController.create = async (req, res, next) => {
     creator: req.user,
   });
   try {
+
     const saved = await newExpense.save();
     return res.send({
       success: true,

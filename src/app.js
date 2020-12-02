@@ -42,14 +42,16 @@ app.use("/api/v1", v1);
 // ------------ Errors --------------//
 
 app.use((req, res, next) => {
-  var err = new Error("Not Found");
+  //404 Not Found
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
+
 app.use((err, req, res, next) => {
   const status = err.status || 500;
-  const error = err.message || "Error processing your request";
+  const error = err.message || 'Error processing your request';
 
   res.status(status).send({
     error,
