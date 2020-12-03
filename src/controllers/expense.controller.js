@@ -29,7 +29,7 @@ expenseController.get = async (req, res, next) => {
   const query = { creator: user._id };
 
   try {
-    const results = await Expense.find(query);
+    const results = await Expense.find(query).sort({ date: "desc" });
     return res.send({
       results,
     });
