@@ -23,7 +23,7 @@ router.all("*", (req, res, next) => {
 
 
 router.get("/me", userController.me);
-router.get("/expense", expenseController.get);
+router.get("/expense/:month?", expenseController.get);
 router.post("/expense", expenseController.create);
 router.delete("/expense/:id", expenseController.destroy);
 router.put("/expense/:id", expenseController.update);

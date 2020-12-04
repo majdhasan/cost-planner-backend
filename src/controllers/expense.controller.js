@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const Expense = require("../models/expense.model");
 
 const expenseController = {};
@@ -24,9 +23,27 @@ expenseController.create = async (req, res, next) => {
 };
 
 expenseController.get = async (req, res, next) => {
-  const { user } = req;
+  const { user, } = req;
+  const month = parseInt(req.params.month);
 
-  const query = { creator: user._id };
+  const now = new Date();
+
+  if (month && month >= 0 && month <= 11) {
+    now.setMonth(month)
+  }
+  console.log(now);
+
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+
+  const query = {
+    creator: user._id,
+    date: {
+      $gte: firstDay,
+      $lt: lastDay
+    }
+  };
+  console.log(query);
 
   try {
     const results = await Expense.find(query).sort({ date: "desc" });
