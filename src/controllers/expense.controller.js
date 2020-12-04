@@ -24,17 +24,15 @@ expenseController.create = async (req, res, next) => {
 
 expenseController.get = async (req, res, next) => {
   const { user, } = req;
-  const month = parseInt(req.params.month);
-
+  const month = Number(req.params.month);
   const now = new Date();
 
-  if (month && month >= 0 && month <= 11) {
+  if (typeof month != "undefined" && month >= 0 && month <= 11) {
     now.setMonth(month)
   }
-  console.log(now);
 
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+  const lastDay = now.getMonth() === 11 ? new Date(now.getFullYear() + 1, (now.getMonth() + 1) % 12, 0) : new Date(now.getFullYear(), (now.getMonth() + 1) % 12, 0)
 
   const query = {
     creator: user._id,
@@ -43,7 +41,6 @@ expenseController.get = async (req, res, next) => {
       $lt: lastDay
     }
   };
-  console.log(query);
 
   try {
     const results = await Expense.find(query).sort({ date: "desc" });
